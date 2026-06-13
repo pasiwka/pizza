@@ -1,0 +1,82 @@
+[
+  {
+    "id": 0,
+    "imageUrl": "https://media.dodostatic.net/image/r:584x584/019e3ff97eeb775f8a0d4408f34c9ab1.webp",
+    "title": "Трюфельная пицца",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 399,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 1,
+    "imageUrl": "https://media.dodostatic.net/image/r:584x584/019ac604bad37209b1ec496bbdd98560.webp",
+    "title": "Додо",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 299,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 2,
+    "imageUrl": "https://media.dodostatic.net/image/r:760x760/0198bf39dda97082912be8d1f3f2b233.webp",
+    "title": "Пепперони",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 349,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 3,
+    "imageUrl": "https://media.dodostatic.net/image/r:760x760/0198bf530345746e98039478001d5108.webp",
+    "title": "Гавайская",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 329,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 4,
+    "imageUrl": "https://media.dodostatic.net/image/r:760x760/0198bf40eb1171aabe90b1b3ce07c0c5.webp",
+    "title": "Четыре сыра",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 369,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 5,
+    "imageUrl": "https://media.dodostatic.net/image/r:760x760/0198bf439a007604880d0231be87cd3e.webp",
+    "title": "Дьябло",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 279,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 6,
+    "imageUrl": "https://media.dodostatic.net/image/r:584x584/019bcbc9b40370a4b47c6298dcac292a.webp",
+    "title": "Масала",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 279,
+    "category": 0,
+    "rating": 0
+  },
+  {
+    "id": 7,
+    "imageUrl": "https://media.dodostatic.net/image/r:584x584/019c986d0e7d75e595d9b0f02bda0ed5.webp",
+    "title": "Ветчина и огурчики",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 279,
+    "category": 0,
+    "rating": 0
+  }
+]
