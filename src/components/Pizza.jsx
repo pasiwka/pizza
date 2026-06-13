@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 // import React from "react";
 
-function Pizza({ title, price, imageSrc }) {
+function Pizza({ title, price, imageSrc, types, sizes }) {
   const [addCount, setAddCount] = useState(0);
   // const [addCount, setAddCount] =React.useState(0); вот так удобнее,
   //  но я решила использовать деструктуризацию
+  const [activeType, setActiveType] = useState(0);
+  const [activeSize, setActiveSize] = useState(0);
   const handleAddClick = () => {
     setAddCount(addCount + 1);
   };
+  const typeNames = ["тонкое", "традиционное"];
 
   return (
     <div className="pizza-block">
@@ -15,13 +18,26 @@ function Pizza({ title, price, imageSrc }) {
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          <li className="active">тонкое</li>
-          <li>традиционное</li>
+          {types.map((index) => (
+            <li
+              key={index}
+              className={activeType === index ? "active" : ""}
+              onClick={() => setActiveType(index)}
+            >
+              {typeNames[index]}
+            </li>
+          ))}
         </ul>
         <ul>
-          <li className="active">26 см.</li>
-          <li>30 см.</li>
-          <li>40 см.</li>
+          {sizes.map((size) => (
+            <li
+              key={size}
+              className={activeSize === size ? "active" : ""}
+              onClick={() => setActiveSize(size)}
+            >
+              {size} см.
+            </li>
+          ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
