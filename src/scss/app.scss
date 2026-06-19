@@ -47,7 +47,6 @@ body {
 
     @media (max-width: 1300px) {
       flex-direction: column-reverse;
-      // gap: 20px;
 
       .categories {
         margin-top: 20px;
@@ -104,7 +103,6 @@ body {
       margin-right: 10px;
       path {
         stroke: $black;
-        strokeWidth: 1.9;
       }
     }
   }

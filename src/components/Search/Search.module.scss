@@ -1,6 +1,5 @@
 .root{
     position: relative;
-    left: -100px;
 }
 .input{
     border: 1px solid rgba(0,0,0,0.1);
@@ -23,6 +22,19 @@
     left: 14px;
     top: 12px;
 
+}
+.clear{
+    width: 24px;
+    height: 24px;
+    opacity: 0.3;
+    position: absolute;
+    right: 14px;
+    top: 12px;
+    cursor: pointer;
+
+    &:hover{
+        opacity: 0.8;
+    }
 }
 
 .input:focus + .icon {

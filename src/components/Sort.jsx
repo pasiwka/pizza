@@ -2,9 +2,12 @@ import React from "react";
 
 function Sort({ value, setActiveCategory }) {
   const sort = [
-    { name: "популярности", sort: "rating" },
-    { name: "цене", sort: "price" },
-    { name: "алфовиту", sort: "title" },
+    { name: "популярности ↓", sort: "rating" },
+    { name: "популярности ↑", sort: "-rating" },
+    { name: "цене ↓", sort: "price" },
+    { name: "цене ↑", sort: "-price" },
+    { name: "алфовиту ↓", sort: "title" },
+    { name: "алфовиту ↑", sort: "-title" },
   ];
   const [isOpen, setIsOpen] = React.useState(false);
 
