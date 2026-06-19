@@ -1,26 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCategoryId } from "../redux/slices/filterSlice";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import Pizza from "../components/Pizza/Pizza";
 import Skeleton from "../components/Pizza/Skeleton";
 import Pagination from "../components/Pagination";
+import { SearchContext } from "../App";
 
-const Home = ({ seacrhValue }) => {
+const Home = () => {
+  const categoryId = useSelector((state) => state.filter.categoryId);
+  const dispatch = useDispatch();
+  const sortId = useSelector((state) => state.filter.sort.sortProperty);
+
+  const { seacrhValue } = useContext(SearchContext);
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
-  const [sortId, setSortId] = useState({
-    name: "популярности",
-    sort: "rating",
-  });
+  // const [categoryId, setCategoryId] = useState(0);
+  // const [sortId, setSortId] = useState({
+  //   name: "популярности",
+  //   sort: "rating",
+  // });
   const [page, setPage] = useState(1);
 
+  const onChangeCategory = (i) => {
+    dispatch(setCategoryId());
+  };
   useEffect(() => {
     setIsLoading(true);
 
-    const sortBy = sortId.sort.replace("-", "");
-    const order = sortId.sort.includes("-") ? "asc" : "desc";
+    const sortBy = sortId.replace("-", "");
+    const order = sortId.includes("-") ? "asc" : "desc";
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = seacrhValue ? `&search=${seacrhValue}` : "";
 
@@ -38,14 +50,17 @@ const Home = ({ seacrhValue }) => {
     window.scrollTo(0, 0);
   }, [categoryId, sortId, seacrhValue, page]);
 
-  const pizzas = items
-    // .filter((obj) => {
-    //   if (obj.title.toLowerCase().includes(seacrhValue.toLowerCase())) {
-    //     return true;
-    //   }
-    //   return false;
-    // })  можно так можно через бек
-    .map((obj, index) => <Pizza key={`${obj.id}`} {...obj} />);
+  // const pizzas = items
+  //   // .filter((obj) => {
+  //   //   if (obj.title.toLowerCase().includes(seacrhValue.toLowerCase())) {
+  //   //     return true;
+  //   //   }
+  //   //   return false;
+  //   // })  можно так можно через бек
+  //   .map((obj, index) => <Pizza key={`${obj.id}`} {...obj} />);
+  const pizzas = Array.isArray(items)
+    ? items.map((obj) => <Pizza key={obj.id} {...obj} />)
+    : [];
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
@@ -53,11 +68,8 @@ const Home = ({ seacrhValue }) => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryId}
-          setActiveCategory={(i) => setCategoryId(i)}
-        />
-        <Sort value={sortId} setActiveCategory={(i) => setSortId(i)} />
+        <Categories value={categoryId} setActiveCategory={onChangeCategory} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
