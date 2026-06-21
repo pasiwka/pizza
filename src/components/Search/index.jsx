@@ -1,8 +1,20 @@
 import React from "react";
+import debounce from "lodash.debounce";
 import styles from "./Search.module.scss";
 import { SearchContext } from "../../App";
 
 const Search = () => {
+  const inputRef = React.useRef();
+
+  const onClickClear = () => {
+    setSeacrhValue("");
+    inputRef.current.focus();
+  };
+
+  const onChangeInput = (event) => {
+    setSeacrhValue(event.target.value);
+  };
+
   const { seacrhValue, setSeacrhValue } = React.useContext(SearchContext);
   return (
     <div className={styles.root}>
@@ -18,14 +30,15 @@ const Search = () => {
         />
       </svg>
       <input
+        ref={inputRef}
         value={seacrhValue}
-        onChange={(event) => setSeacrhValue(event.target.value)}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы :)"
       />
       {seacrhValue && (
         <svg
-          onClick={() => setSeacrhValue("")}
+          onClick={onClickClear}
           className={styles.clear}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
