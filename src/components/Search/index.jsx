@@ -4,18 +4,28 @@ import styles from "./Search.module.scss";
 import { SearchContext } from "../../App";
 
 const Search = () => {
+  const { searchValue, setSeacrhValue } = React.useContext(SearchContext);
+  const [value, setValue] = React.useState("");
   const inputRef = React.useRef();
 
   const onClickClear = () => {
     setSeacrhValue("");
+    setValue("");
     inputRef.current.focus();
   };
 
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      setSeacrhValue(str);
+    }, 500),
+    [],
+  );
+
   const onChangeInput = (event) => {
-    setSeacrhValue(event.target.value);
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
   };
 
-  const { seacrhValue, setSeacrhValue } = React.useContext(SearchContext);
   return (
     <div className={styles.root}>
       <svg
@@ -31,12 +41,12 @@ const Search = () => {
       </svg>
       <input
         ref={inputRef}
-        value={seacrhValue}
+        value={value}
         onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы :)"
       />
-      {seacrhValue && (
+      {value && (
         <svg
           onClick={onClickClear}
           className={styles.clear}
