@@ -1,17 +1,30 @@
 import React, { useState } from "react";
-// import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItems } from "../../redux/slices/cartSlice";
 
-function Pizza({ title, price, imageSrc, types, sizes }) {
-  const [addCount, setAddCount] = useState(0);
+const typeNames = ["тонкое", "традиционное"];
+function Pizza({ id, title, price, imageSrc, types, sizes }) {
   // const [addCount, setAddCount] =React.useState(0); вот так удобнее,
   //  но я решила использовать деструктуризацию
+  const dispatch = useDispatch();
+  const cartItem = useSelector((state) =>
+    state.cart.items.find((obj) => obj.id === id),
+  );
+  const addedCount = cartItem ? cartItem.count : 0;
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
-  const handleAddClick = () => {
-    setAddCount(addCount + 1);
-  };
-  const typeNames = ["тонкое", "традиционное"];
 
+  const onClickAdd = () => {
+    const items = {
+      id,
+      title,
+      price,
+      imageSrc,
+      type: typeNames[activeType],
+      size: sizes[activeSize],
+    };
+    dispatch(addItems(items));
+  };
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
@@ -45,7 +58,7 @@ function Pizza({ title, price, imageSrc, types, sizes }) {
           <div className="pizza-block__price">от {price} ₽</div>
           <button
             className="button button--outline button--add"
-            onClick={handleAddClick}
+            onClick={onClickAdd}
           >
             <svg
               width="12"
@@ -60,7 +73,7 @@ function Pizza({ title, price, imageSrc, types, sizes }) {
               />
             </svg>
             <span>Добавить</span>
-            <i>{addCount}</i>
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>
