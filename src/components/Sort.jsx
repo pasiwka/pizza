@@ -13,6 +13,7 @@ export const SortList = [
 function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
+  const sortRef = React.useRef();
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -22,8 +23,21 @@ function Sort() {
     setIsOpen(false);
   };
 
+  React.useEffect(() => {
+    const handleClick = (event) => {
+      const path = event.composedPath ? event.composedPath() : event.path; //чтобы во всех браузерах работало
+      if (path && !path.includes(sortRef.current)) {
+        setIsOpen(false);
+      }
+    };
+    document.body.addEventListener("click", handleClick);
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
