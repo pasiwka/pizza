@@ -5,8 +5,7 @@ import {
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { setItems } from "../redux/slices/pizzasSlice";
-import axios from "axios";
+import { fetchPizzas } from "../redux/slices/pizzasSlice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { SortList } from "../components/Sort";
@@ -21,17 +20,15 @@ import { SearchContext } from "../App";
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSearch = React.useRef(false);
-  const isMouted = React.useRef(false);
+  const isFirstLoad = React.useRef(true);
 
   const { categoryId, sort, currentPage } = useSelector(
     (state) => state.filter,
   );
-  const items = useSelector((state) => state.pizza.items);
+  const { items, status } = useSelector((state) => state.pizza);
 
   const sortId = sort.sortProperty;
   const { seacrhValue } = React.useContext(SearchContext);
-  const [isLoading, setIsLoading] = React.useState(true);
 
   const onChangeCategory = (i) => {
     dispatch(setCategoryId(i));
@@ -40,41 +37,25 @@ const Home = () => {
     dispatch(setCurrentPage(num));
   };
 
-  const fetchPizzas = async () => {
-    setIsLoading(true);
-
+  const getPizzas = async () => {
     const sortBy = sortId.replace("-", "");
     const order = sortId.includes("-") ? "asc" : "desc";
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = seacrhValue ? `&search=${seacrhValue}` : "";
 
-    // fetch(
-    //   `https://6a2d3c142edd4cb330d0eb01.mockapi.io/items?page=${page}&limit=4&${
-    //     category
-    //   }&sortBy=${sortBy}&order=${order}${search}`,
-    // )
-    //   .then((res) => res.json())
-    //   .then((arr) => {
-    //     setItems(arr);
-    //     setIsLoading(false);
-    // //   }).catch((err) => {
-    //     console.log(err);
-    //   });
+    dispatch(
+      fetchPizzas({
+        sortBy,
+        order,
+        category,
+        search,
+        currentPage,
+      }),
+    );
 
-    try {
-      const { data } = await axios.get(
-        `https://6a2d3c142edd4cb330d0eb01.mockapi.io/items?page=${currentPage}&limit=4&${
-          category
-        }&sortBy=${sortBy}&order=${order}${search}`,
-      );
-      dispatch(setItems(data));
-    } catch (err) {
-      console.log("ERROR", err);
-    } finally {
-      setIsLoading(false);
-    }
     window.scrollTo(0, 0);
   };
+
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
@@ -87,40 +68,27 @@ const Home = () => {
           sort,
         }),
       );
-      isSearch.current = true;
+      isFirstLoad.current = false;
     }
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if (!isSearch.current) {
-      fetchPizzas();
+    if (!isFirstLoad.current) {
+      getPizzas();
     }
-    isSearch.current = false;
+    isFirstLoad.current = false;
   }, [categoryId, sortId, seacrhValue, currentPage]);
 
   React.useEffect(() => {
-    if (isMouted.current) {
-      const queryString = qs.stringify({
-        sortProperty: sort.sortProperty,
-        categoryId,
-        currentPage,
-      });
+    const queryString = qs.stringify({
+      sortProperty: sort.sortProperty,
+      categoryId,
+      currentPage,
+    });
 
-      navigate(`?${queryString}`);
-    }
-    isMouted.current = true;
-  }, [categoryId, sort.sortProperty, currentPage]);
+    navigate(`?${queryString}`);
+  }, [categoryId, sort.sortProperty, currentPage, navigate]);
 
-  // const pizzas = items
-  //   // .filter((obj) => {
-  //   //   if (obj.title.toLowerCase().includes(seacrhValue.toLowerCase())) {
-  //   //     return true;
-  //   //   }
-  //   //   return false;
-  //   // })  можно так можно через бек
-  //   .map((obj, index) => <Pizza key={`${obj.id}`} {...obj} />);
   const pizzas = Array.isArray(items)
     ? items.map((obj) => <Pizza key={obj.id} {...obj} />)
     : [];
@@ -134,8 +102,23 @@ const Home = () => {
         <Categories value={categoryId} setActiveCategory={onChangeCategory} />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+
+      {status === "error" ? (
+        <div className="content__info">
+          <h2>
+            У нас что-то сломалось &#128533; <br />
+          </h2>
+          <p>Пиццы не прогрузились. Возвращайтесь позже </p>
+        </div>
+      ) : (
+        <>
+          <h2 className="content__title">Все пиццы</h2>
+          <div className="content__items">
+            {status === "loading" ? skeletons : pizzas}
+          </div>
+        </>
+      )}
+
       <Pagination value={currentPage} onChangePage={onChangePage} />
     </div>
   );
