@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 const FullPizza = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -17,7 +18,8 @@ const FullPizza = () => {
         setData(data);
         setIsLoading(false);
       } catch (error) {
-        alert("поломочка(");
+        alert("поломочка( такой пиццы нет. Вернуться на главную?");
+        navigate("/");
         setIsLoading(false);
       }
     }
@@ -32,13 +34,13 @@ const FullPizza = () => {
       </div>
     );
   }
-  if (!data) {
-    return (
-      <div className="content__pizza">
-        <h2>Пицца не найдена</h2>
-      </div>
-    );
-  }
+  //   if (!data) {
+  //     return (
+  //       <div className="content__pizza">
+  //         <h2>Пицца не найдена</h2>
+  //       </div>
+  //     );
+  //   }
 
   return (
     <div className="content__pizza">
