@@ -7,7 +7,7 @@ import {
 } from "../redux/slices/filterSlice";
 import { fetchPizzas } from "../redux/slices/pizzasSlice";
 import qs from "qs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SortList } from "../components/Sort";
 
 import Categories from "../components/Categories";

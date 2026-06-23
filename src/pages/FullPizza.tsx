@@ -2,45 +2,40 @@ import React from "react";
 import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-const FullPizza = () => {
+const FullPizza: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [data, setData] = React.useState<{
+    imageSrc: string;
+    title: string;
+    sizes: number[];
+    description: string;
+    price: number;
+  }>();
 
   React.useEffect(() => {
     async function fetchPizza() {
       try {
-        setIsLoading(true);
         const { data } = await axios.get(
           `https://6a2d3c142edd4cb330d0eb01.mockapi.io/items/${id}`,
         );
         setData(data);
-        setIsLoading(false);
       } catch (error) {
         alert("поломочка( такой пиццы нет. Вернуться на главную?");
         navigate("/");
-        setIsLoading(false);
       }
     }
 
     fetchPizza();
   }, [id]);
 
-  if (isLoading) {
+  if (!data) {
     return (
       <div className="content__pizza">
         <h2>Погоди чуток...</h2>
       </div>
     );
   }
-  //   if (!data) {
-  //     return (
-  //       <div className="content__pizza">
-  //         <h2>Пицца не найдена</h2>
-  //       </div>
-  //     );
-  //   }
 
   return (
     <div className="content__pizza">

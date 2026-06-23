@@ -1,9 +1,8 @@
-import React from "react";
 import "./scss/app.scss";
 
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import FullPizza from "./pages/FullPizza";
+import FullPizza from "./pages/FullPizza.tsx";
 import Cart from "./pages/Cart";
 
 import { Routes, Route } from "react-router-dom";
