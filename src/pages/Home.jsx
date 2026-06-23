@@ -15,20 +15,18 @@ import Sort from "../components/Sort";
 import Pizza from "../components/Pizza/Pizza";
 import Skeleton from "../components/Pizza/Skeleton";
 import Pagination from "../components/Pagination";
-import { SearchContext } from "../App";
 
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isFirstLoad = React.useRef(true);
 
-  const { categoryId, sort, currentPage } = useSelector(
+  const { categoryId, sort, currentPage, searchValue } = useSelector(
     (state) => state.filter,
   );
   const { items, status } = useSelector((state) => state.pizza);
 
   const sortId = sort.sortProperty;
-  const { seacrhValue } = React.useContext(SearchContext);
 
   const onChangeCategory = (i) => {
     dispatch(setCategoryId(i));
@@ -41,7 +39,7 @@ const Home = () => {
     const sortBy = sortId.replace("-", "");
     const order = sortId.includes("-") ? "asc" : "desc";
     const category = categoryId > 0 ? `category=${categoryId}` : "";
-    const search = seacrhValue ? `&search=${seacrhValue}` : "";
+    const search = searchValue ? `&search=${searchValue}` : "";
 
     dispatch(
       fetchPizzas({
@@ -77,17 +75,18 @@ const Home = () => {
       getPizzas();
     }
     isFirstLoad.current = false;
-  }, [categoryId, sortId, seacrhValue, currentPage]);
+  }, [categoryId, sortId, searchValue, currentPage]);
 
   React.useEffect(() => {
     const queryString = qs.stringify({
       sortProperty: sort.sortProperty,
       categoryId,
       currentPage,
+      searchValue,
     });
 
     navigate(`?${queryString}`);
-  }, [categoryId, sort.sortProperty, currentPage, navigate]);
+  }, [categoryId, sort.sortProperty, currentPage, searchValue, navigate]);
 
   const pizzas = Array.isArray(items)
     ? items.map((obj) => <Pizza key={obj.id} {...obj} />)

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSortId } from "../redux/slices/filterSlice";
+import { selectSort, setSortId } from "../redux/slices/filterSlice";
 
 export const SortList = [
   { name: "популярности ↓", sortProperty: "rating" },
@@ -12,7 +12,7 @@ export const SortList = [
 ];
 function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
+  const sort = useSelector(selectSort);
   const sortRef = React.useRef();
 
   const [isOpen, setIsOpen] = React.useState(false);
