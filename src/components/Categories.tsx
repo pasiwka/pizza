@@ -2,19 +2,17 @@ import React from "react";
 
 type CategoriesPros = {
   value: number;
-  setActiveCategory: any;
+  setActiveCategory: (i: number) => void;
 };
-
+const categories = [
+  "Все",
+  "Мясные",
+  "Вегетарианская",
+  "Гриль",
+  "Острые",
+  "Закрытые",
+];
 const Categories: React.FC<CategoriesPros> = ({ value, setActiveCategory }) => {
-  const categories = [
-    "Все",
-    "Мясные",
-    "Вегетарианская",
-    "Гриль",
-    "Острые",
-    "Закрытые",
-  ];
-
   return (
     <div className="categories">
       <ul>

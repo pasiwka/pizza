@@ -29,12 +29,12 @@ const Sort: React.FC = () => {
   };
 
   React.useEffect(() => {
-    const handleClick = (event: any) => {
-      const path = event.composedPath ? event.composedPath() : event.path; //чтобы во всех браузерах работало
-      if (path && !path.includes(sortRef.current)) {
+    const handleClick = (event: MouseEvent) => {
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
+
     document.body.addEventListener("click", handleClick);
     return () => {
       document.body.removeEventListener("click", handleClick);
