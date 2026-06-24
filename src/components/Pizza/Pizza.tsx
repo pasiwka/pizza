@@ -3,8 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItems, selectCartItemById } from "../../redux/slices/cartSlice";
 import { Link } from "react-router-dom";
 
+type PizzaPros = {
+  id: string;
+  title: string;
+  price: number;
+  imageSrc: string;
+  types: number[];
+  sizes: number[];
+};
 const typeNames = ["тонкое", "традиционное"];
-function Pizza({ id, title, price, imageSrc, types, sizes }) {
+const Pizza: React.FC<PizzaPros> = ({
+  id,
+  title,
+  price,
+  imageSrc,
+  types,
+  sizes,
+}) => {
   // const [addCount, setAddCount] =React.useState(0); вот так удобнее,
   //  но я решила использовать деструктуризацию в этом компоненте
   const dispatch = useDispatch();
@@ -80,6 +95,6 @@ function Pizza({ id, title, price, imageSrc, types, sizes }) {
       </div>
     </div>
   );
-}
+};
 
 export default Pizza;

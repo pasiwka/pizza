@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { fetchPizzas } from "../redux/slices/pizzasSlice";
+import { fetchPizzas, selectPizza } from "../redux/slices/pizzasSlice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { SortList } from "../components/Sort";
@@ -16,22 +17,21 @@ import Pizza from "../components/Pizza/Pizza";
 import Skeleton from "../components/Pizza/Skeleton";
 import Pagination from "../components/Pagination";
 
-const Home = () => {
+const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isFirstLoad = React.useRef(true);
 
-  const { categoryId, sort, currentPage, searchValue } = useSelector(
-    (state) => state.filter,
-  );
-  const { items, status } = useSelector((state) => state.pizza);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
+  const { items, status } = useSelector(selectPizza);
 
   const sortId = sort.sortProperty;
 
-  const onChangeCategory = (i) => {
+  const onChangeCategory = (i: number) => {
     dispatch(setCategoryId(i));
   };
-  const onChangePage = (num) => {
+  const onChangePage = (num: number) => {
     dispatch(setCurrentPage(num));
   };
 
@@ -42,6 +42,7 @@ const Home = () => {
     const search = searchValue ? `&search=${searchValue}` : "";
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,

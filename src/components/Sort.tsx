@@ -2,7 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSort, setSortId } from "../redux/slices/filterSlice";
 
-export const SortList = [
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+
+export const SortList: SortItem[] = [
   { name: "популярности ↓", sortProperty: "rating" },
   { name: "популярности ↑", sortProperty: "-rating" },
   { name: "цене ↓", sortProperty: "price" },
@@ -10,21 +15,21 @@ export const SortList = [
   { name: "алфовиту ↓", sortProperty: "title" },
   { name: "алфовиту ↑", sortProperty: "-title" },
 ];
-function Sort() {
+
+const Sort: React.FC = () => {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = React.useRef();
+  const sortRef = React.useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const onClickSelectSort = (obj) => {
+  const onClickSelectSort = (obj: SortItem) => {
     dispatch(setSortId(obj));
-    // setActiveCategory(index);
     setIsOpen(false);
   };
 
   React.useEffect(() => {
-    const handleClick = (event) => {
+    const handleClick = (event: any) => {
       const path = event.composedPath ? event.composedPath() : event.path; //чтобы во всех браузерах работало
       if (path && !path.includes(sortRef.current)) {
         setIsOpen(false);
@@ -60,7 +65,7 @@ function Sort() {
             {SortList.map((Obj, index) => (
               <li
                 key={index}
-                className={sort.SortList === Obj.SortList ? "active" : ""}
+                className={sort.SortList === SortList ? "active" : ""}
                 onClick={() => onClickSelectSort(Obj)}
               >
                 {Obj.name}
@@ -71,6 +76,6 @@ function Sort() {
       )}
     </div>
   );
-}
+};
 
 export default Sort;
