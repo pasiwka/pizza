@@ -1,23 +1,28 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSort, setSortId } from "../redux/slices/filterSlice";
+import {
+  selectSort,
+  setSortId,
+  SortPropertyEnum,
+} from "../redux/slices/filterSlice";
+import { useAppDispatch } from "../redux/store";
 
 type SortItem = {
   name: string;
-  sortProperty: string;
+  sortProperty: SortPropertyEnum;
 };
 
 export const SortList: SortItem[] = [
-  { name: "популярности ↓", sortProperty: "rating" },
-  { name: "популярности ↑", sortProperty: "-rating" },
-  { name: "цене ↓", sortProperty: "price" },
-  { name: "цене ↑", sortProperty: "-price" },
-  { name: "алфовиту ↓", sortProperty: "title" },
-  { name: "алфовиту ↑", sortProperty: "-title" },
+  { name: "популярности ↓", sortProperty: SortPropertyEnum.RATTING_DESC },
+  { name: "популярности ↑", sortProperty: SortPropertyEnum.RATTING_ABC },
+  { name: "цене ↓", sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: "цене ↑", sortProperty: SortPropertyEnum.PRICE_ABC },
+  { name: "алфовиту ↓", sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: "алфовиту ↑", sortProperty: SortPropertyEnum.TITLE_ABC },
 ];
 
 const Sort: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const sort = useSelector(selectSort);
   const sortRef = React.useRef<HTMLDivElement>(null);
 
@@ -65,7 +70,9 @@ const Sort: React.FC = () => {
             {SortList.map((Obj, index) => (
               <li
                 key={index}
-                className={sort.SortList === SortList ? "active" : ""}
+                className={
+                  sort.sortProperty === Obj.sortProperty ? "active" : ""
+                }
                 onClick={() => onClickSelectSort(Obj)}
               >
                 {Obj.name}

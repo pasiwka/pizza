@@ -6,7 +6,12 @@ import {
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { fetchPizzas, selectPizza } from "../redux/slices/pizzasSlice";
+import {
+  fetchPizzas,
+  SearchPizzaParams,
+  selectPizza,
+  Status,
+} from "../redux/slices/pizzasSlice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { SortList } from "../components/Sort";
@@ -16,9 +21,10 @@ import Sort from "../components/Sort";
 import Pizza from "../components/Pizza/Pizza";
 import Skeleton from "../components/Pizza/Skeleton";
 import Pagination from "../components/Pagination";
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isFirstLoad = React.useRef(true);
 
@@ -42,13 +48,12 @@ const Home: React.FC = () => {
     const search = searchValue ? `&search=${searchValue}` : "";
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
         category,
         search,
-        currentPage,
+        currentPage: String(currentPage),
       }),
     );
 
@@ -57,14 +62,17 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = SortList.find(
-        (obj) => obj.sortProperty === params.sortProperty,
-      );
+      const params = qs.parse(
+        window.location.search.substring(1),
+      ) as unknown as SearchPizzaParams;
+      const sort = SortList.find((obj) => obj.sortProperty === params.sortBy);
+
       dispatch(
         setFilters({
-          ...params,
-          sort,
+          searchValue: params.search || "",
+          categoryId: Number(params.category),
+          currentPage: Number(params.currentPage),
+          sort: sort ? sort : SortList[0],
         }),
       );
       isFirstLoad.current = false;
@@ -72,10 +80,7 @@ const Home: React.FC = () => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (!isFirstLoad.current) {
-      getPizzas();
-    }
-    isFirstLoad.current = false;
+    getPizzas();
   }, [categoryId, sortId, searchValue, currentPage]);
 
   React.useEffect(() => {
@@ -103,7 +108,7 @@ const Home: React.FC = () => {
         <Sort />
       </div>
 
-      {status === "error" ? (
+      {status === Status.ERROR ? (
         <div className="content__info">
           <h2>
             У нас что-то сломалось &#128533; <br />
