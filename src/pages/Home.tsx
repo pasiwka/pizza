@@ -34,9 +34,9 @@ const Home: React.FC = () => {
 
   const sortId = sort.sortProperty;
 
-  const onChangeCategory = (i: number) => {
+  const onChangeCategory = React.useCallback((i: number) => {
     dispatch(setCategoryId(i));
-  };
+  }, []);
   const onChangePage = (num: number) => {
     dispatch(setCurrentPage(num));
   };
@@ -105,7 +105,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} setActiveCategory={onChangeCategory} />
-        <Sort />
+        <Sort value={sort} />
       </div>
 
       {status === Status.ERROR ? (

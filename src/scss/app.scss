@@ -245,12 +245,31 @@ body {
       width: 13%;
 
       &-minus {
-        svg {
-          path:first-of-type {
-            display: none;
-          }
+      transition: all 0.2s ease;  
+  
+      svg {
+        path:first-of-type {
+        display: none;
         }
       }
+
+      &--disabled {
+        background-color: #f0f0f0;
+        border-color: #b0b0b0 ;
+        cursor: not-allowed ;
+        transform: none ; 
+    
+      &:hover {
+        transform: none ;  
+        background-color: #f0f0f0 ;
+      }
+    
+    svg {
+      filter: grayscale(1); 
+      opacity: 0.5;
+    }
+  }
+}
 
       b {
         font-size: 22px;

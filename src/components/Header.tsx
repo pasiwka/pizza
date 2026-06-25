@@ -23,8 +23,8 @@ const Header: React.FC = () => {
             </div>
           </div>
         </Link>
-        {location.pathname !== "/cart" && <Search />}
-
+        {location.pathname !== "/cart" &&
+          !location.pathname.startsWith("/pizzas/") && <Search />}
         {location.pathname !== "/cart" && (
           <div className="header__cart">
             <Link to="/cart" className="button button--cart">
