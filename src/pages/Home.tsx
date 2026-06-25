@@ -5,13 +5,13 @@ import {
   setCategoryId,
   setCurrentPage,
   setFilters,
-} from "../redux/slices/filterSlice";
+} from "../redux/filter/slice";
 import {
   fetchPizzas,
   SearchPizzaParams,
   selectPizza,
   Status,
-} from "../redux/slices/pizzasSlice";
+} from "../redux/pizzas/slice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { SortList } from "../components/Sort";

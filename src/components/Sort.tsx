@@ -4,7 +4,7 @@ import {
   setSortId,
   Sort as SortType,
   SortPropertyEnum,
-} from "../redux/slices/filterSlice";
+} from "../redux/filter/slice";
 import { useAppDispatch } from "../redux/store";
 
 type SortItem = {
