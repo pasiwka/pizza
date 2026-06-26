@@ -1,15 +1,19 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch } from "../redux/store";
+
 import {
   setSortId,
   Sort as SortType,
   SortPropertyEnum,
 } from "../redux/filter/slice";
-import { useAppDispatch } from "../redux/store";
 
 type SortItem = {
   name: string;
   sortProperty: SortPropertyEnum;
+};
+
+type SortPopup = {
+  value: SortType;
 };
 
 export const SortList: SortItem[] = [
@@ -20,9 +24,7 @@ export const SortList: SortItem[] = [
   { name: "алфовиту ↓", sortProperty: SortPropertyEnum.TITLE_DESC },
   { name: "алфовиту ↑", sortProperty: SortPropertyEnum.TITLE_ABC },
 ];
-type SortPopup = {
-  value: SortType;
-};
+
 const Sort: React.FC<SortPopup> = React.memo(({ value }) => {
   const dispatch = useAppDispatch();
   const sortRef = React.useRef<HTMLDivElement>(null);

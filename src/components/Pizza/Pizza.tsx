@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItems, CartItem, selectCartItemById } from "../../redux/cart/slice";
 import { Link } from "react-router-dom";
+
+import { addItems, CartItem, selectCartItemById } from "../../redux/cart/slice";
 
 type PizzaPros = {
   id: string;
@@ -12,6 +13,7 @@ type PizzaPros = {
   sizes: number[];
 };
 const typeNames = ["тонкое", "традиционное"];
+
 const Pizza: React.FC<PizzaPros> = ({
   id,
   title,
@@ -20,8 +22,6 @@ const Pizza: React.FC<PizzaPros> = ({
   types,
   sizes,
 }) => {
-  // const [addCount, setAddCount] =React.useState(0); вот так удобнее,
-  //  но я решила использовать деструктуризацию в этом компоненте
   const dispatch = useDispatch();
   const cartItem = useSelector(selectCartItemById(id));
   const addedCount = cartItem ? cartItem.count : 0;

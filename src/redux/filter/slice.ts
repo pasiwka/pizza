@@ -1,4 +1,3 @@
-// slice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FilterSliseState, Sort } from "./types";
 

@@ -1,5 +1,9 @@
+import qs from "qs";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../redux/store";
+import { useNavigate } from "react-router-dom";
+
 import {
   selectFilter,
   setCategoryId,
@@ -12,8 +16,7 @@ import {
   selectPizza,
   Status,
 } from "../redux/pizzas/slice";
-import qs from "qs";
-import { useNavigate } from "react-router-dom";
+
 import { SortList } from "../components/Sort";
 
 import Categories from "../components/Categories";
@@ -21,7 +24,6 @@ import Sort from "../components/Sort";
 import Pizza from "../components/Pizza/Pizza";
 import Skeleton from "../components/Pizza/Skeleton";
 import Pagination from "../components/Pagination";
-import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
